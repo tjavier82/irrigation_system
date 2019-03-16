@@ -10,7 +10,7 @@ Arduino subsystem tasks are:
 
 Currently following sensors are being used:
 - DHT22 
-- Capacitive moisture sensor. Check [Links](https://www.switchdoc.com/2018/11/tutorial-capacitive-moisture-sensor-grove/)
+- Capacitive moisture sensor. Check [Link](https://www.switchdoc.com/2018/11/tutorial-capacitive-moisture-sensor-grove/)
 
 ### Moisture level calibration
 Following meausures have been taken:
