@@ -108,8 +108,9 @@ if __name__ == "__main__":
                               VALUES (?,?,?)''', (humidity, 'inside', hour))
             cursor.execute('''INSERT INTO temperatureRead(temperature, type, date)
                               VALUES (?,?,?)''', (temperature, 'inside', hour))
+            # TODO 1 refers to the plant id currently used. To be refactor
             cursor.execute('''INSERT INTO moistureRead(moisture, plant, date)
-                              VALUES (?,?,?)''', (moisture, 'smiley', hour))
+                              VALUES (?,?,?)''', (moisture, 1, hour))
 
             # Closing everything. Sleep time will be around 10 minutes so it does not make sense keeping it open
             db.commit()
