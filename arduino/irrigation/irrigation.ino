@@ -5,7 +5,8 @@ So far it uses:
 - DHT22 for temperature and humidity. Pretty standard one.
 - Capacitive Moisture Sensor. 
 	Check https://www.switchdoc.com/2018/11/tutorial-capacitive-moisture-sensor-grove/
-
+- RGB Led to provide some human readable information
+	
 Author: Javi Robles (tjavier82)
 	
 */
@@ -20,7 +21,11 @@ Author: Javi Robles (tjavier82)
 
 // Pin Definitions
 // Digital
-#define DHT_PIN_DATA	2
+#define DHT_PIN_DATA 2
+#define RED_PIN	3
+#define GREEN_PIN 4
+#define BLUE_PIN 5
+
 
 // Analog
 #define MOISTURE_SENSOR 0
@@ -30,6 +35,11 @@ Author: Javi Robles (tjavier82)
 DHT dht(DHT_PIN_DATA, DHTTYPE);
 const int TIMEOUT = 10000;      
 
+const int dry = 600;
+const int wet = 360;
+const int objectiveLevel = 480;
+const int tolerance = 40;
+
 
 
 // Setup the essentials for your circuit to work. It runs first every time your circuit is powered with electricity.
@@ -38,7 +48,18 @@ void setup()
     // Setup Serial which is useful for debugging
     // Use the Serial Monitor to view printed messages
     Serial.begin(9600);
-    dht.begin();
+    
+	dht.begin();
+	
+	pinMode(RED_PIN, OUTPUT);
+	pinMode(GREEN_PIN, OUTPUT);
+	pinMode(BLUE_PIN, OUTPUT);
+	
+	// Off all leds
+	digitalWrite(RED_PIN, LOW);
+	digitalWrite(GREEN_PIN, LOW);
+	digitalWrite(BLUE_PIN, LOW);
+	
 }
 
 void loop() 
@@ -48,12 +69,35 @@ void loop()
   float dhtHumidity = dht.readHumidity();
   // Read temperature in Celsius, for Fahrenheit use .readTempF()
   float dhtTempC = dht.readTemperature();
-	// Read moisture level
-	int moistureLevel = analogRead(MOISTURE_SENSOR);
+  // Read moisture level
+  int moistureLevel = analogRead(MOISTURE_SENSOR);
 
+  
+  // We set an objectiveLevel and check if we are in tolerance (good) or half tolerance (even better)
+  if ((moistureLevel <= (objectiveLevel - tolerance)) or (moistureLevel >= (objectiveLevel + tolerance))) {
+	// Red warning
+	digitalWrite(RED_PIN, HIGH);
+	digitalWrite(GREEN_PIN, LOW);
+	digitalWrite(BLUE_PIN, LOW);
+  }
+  else if ((moistureLevel <= (objectiveLevel - tolerance / 2 )) or (moistureLevel >= (objectiveLevel + tolerance / 2))) {
+	// Yellow, not bad
+	digitalWrite(RED_PIN, HIGH);
+	digitalWrite(GREEN_PIN, HIGH);
+	digitalWrite(BLUE_PIN, LOW);
+  }
+  else {
+	// Green perfect situation
+	digitalWrite(RED_PIN, LOW);
+	digitalWrite(GREEN_PIN, HIGH);
+	digitalWrite(BLUE_PIN, LOW);
+  }
+  
+  
   Serial.print(dhtHumidity);Serial.print(";");Serial.print(dhtTempC);Serial.print(";");Serial.print(moistureLevel);Serial.println();
   delay(TIMEOUT);
     
 }
+
 
 
