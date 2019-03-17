@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("config", help="Config file. If not provided, " + DEFAULT_CONFIG_FILE + " will be used.",
-                        type=string, default=DEFAULT_CONFIG_FILE)
+                        default=DEFAULT_CONFIG_FILE)
     parser.add_argument("-v", "--verbose", help="increase verbosity", action="store_true")
     args = parser.parse_args()
 
