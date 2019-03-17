@@ -11,6 +11,7 @@ Arduino subsystem tasks are:
 Currently following sensors are being used:
 - DHT22 
 - Capacitive moisture sensor. Check [Link](https://www.switchdoc.com/2018/11/tutorial-capacitive-moisture-sensor-grove/)
+- RGB Led for human readable feedback from moisture sensor.
 
 ### Moisture level calibration
 Following meausures have been taken:
@@ -21,4 +22,8 @@ Following meausures have been taken:
   - 21 min &approx; 490
   - 35 min &approx; 475
 
+## Daemon subsystem
+Python daemon tasks are:
+- Fetch temperature, humidity and moisture level from sensor and store it in a sqlite database
+- Fecth temperature and humidity from OpenWeather and store it in a sqlite database
 
