@@ -124,6 +124,9 @@ if __name__ == "__main__":
         except pyowm.exceptions.api_call_error.APICallTimeoutError:
             logger.exception('OWM API Timeout')
 
+        except KeyboardInterrupt:
+            go_on = False
+
         except:
             logger.exception('Exception not cached, exiting...')
             cursor.close()
