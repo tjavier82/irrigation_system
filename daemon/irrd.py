@@ -19,12 +19,12 @@ if __name__ == "__main__":
     parser.add_argument("-v", "--verbose", help="increase verbosity", action="store_true")
     args = parser.parse_args()
 
-
     config = configparser.ConfigParser()
     try:
         config.read (args.config)
+
     except:
-        print ('Error reading config file')
+        print('Error reading config file')
         exit()
 
     #Setting up logs
