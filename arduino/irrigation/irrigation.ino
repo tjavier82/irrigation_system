@@ -74,23 +74,30 @@ void loop()
 
   
   // We set an objectiveLevel and check if we are in tolerance (good) or half tolerance (even better)
-  if ((moistureLevel <= (objectiveLevel - tolerance)) or (moistureLevel >= (objectiveLevel + tolerance))) {
-	// Red warning
-	digitalWrite(RED_PIN, HIGH);
-	digitalWrite(GREEN_PIN, LOW);
-	digitalWrite(BLUE_PIN, LOW);
+  if ((moistureLevel <= (objectiveLevel - tolerance))) {
+	  //Too much water
+	  //BLUE
+	  color (0,0,255);
   }
-  else if ((moistureLevel <= (objectiveLevel - tolerance / 2 )) or (moistureLevel >= (objectiveLevel + tolerance / 2))) {
-	// Yellow, not bad
-	digitalWrite(RED_PIN, HIGH);
-	digitalWrite(GREEN_PIN, HIGH);
-	digitalWrite(BLUE_PIN, LOW);
+  else if ((moistureLevel <= objectiveLevel - (tolerance/2))) {
+	  //Some water excess
+	  // CYAN
+	  color (0, 255, 255);
+  }
+  else if ((moistureLevel >= objectiveLevel + (tolerance))) {
+	  //Completely dry
+	  //RED
+	  color(255, 0, 0);
+  }
+  else if ((moistureLevel >= objectiveLevel + (tolerance/2))) {
+	  //Some dryness
+	  //ORANGE
+	  color(237, 109, 0);
   }
   else {
-	// Green perfect situation
-	digitalWrite(RED_PIN, LOW);
-	digitalWrite(GREEN_PIN, HIGH);
-	digitalWrite(BLUE_PIN, LOW);
+	  //Everythong fine
+	  //GREEN
+	  color(0, 255, 255);
   }
   
   
@@ -99,5 +106,9 @@ void loop()
     
 }
 
-
+void color (int red, int green, int blue) {
+	analogWrite(RED_PIN, red);
+	analogWrite(GREEN_PIN, green);
+	analogWrite(BLUE_PIN, blue);
+}
 
