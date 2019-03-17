@@ -14,10 +14,11 @@ DEFAULT_CONFIG_FILE = "config.ini"
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("config", help="Config file. If not provided, " + DEFAULT_CONFIG_FILE + " will be used.",
+    parser.add_argument("-c", "--config", help="Config file. If not provided, " + DEFAULT_CONFIG_FILE + " will be used.",
                         default=DEFAULT_CONFIG_FILE)
     parser.add_argument("-v", "--verbose", help="increase verbosity", action="store_true")
     args = parser.parse_args()
+
 
     config = configparser.ConfigParser()
     try:
@@ -38,7 +39,25 @@ if __name__ == "__main__":
     ch.setFormatter(formatter)
     logger.addHandler(ch)
 
-    #Set config options
+    #Setting up config options. Config file will have following sections
+    # Serial
+    #   SerialPort
+    #   SerialBaudRate
+    #   SerialTimeout
+    #   SleepTime
+    #
+    # Database
+    #   FilePath
+    #
+    # Logging
+    #   LoggerName
+    #
+    # OpenWeather
+    #   APIKey
+    #   Lat
+    #   Lon
+
+
     serial_port = config['Serial']['SerialPort']
     serial_baud_rate = int(config['Serial']['SerialBaudRate'])
     serial_timeout = int(config['Serial']['SerialTimeout'])
@@ -48,17 +67,22 @@ if __name__ == "__main__":
     lon = float(config['OpenWeather']['Lon'])
 
     owm = pyowm.OWM(config['OpenWeather']['APIKey'], language='es')
-    arduino = serial.Serial(serial_port, serial_baud_rate, timeout=serial_timeout)
     go_on = True
 
     while go_on:
         try:
 
-            db = sqlite3.connect(db_file)
-            cursor = db.cursor()
-
+            # Getting weather object.
             obs = owm.weather_at_coords(lat, lon)
             w = obs.get_weather()
+
+            # Opening connection to database and arduino.
+            db = sqlite3.connect(db_file)
+            cursor = db.cursor()
+            arduino = serial.Serial(serial_port, serial_baud_rate, timeout=serial_timeout)
+
+
+            # Get information and insert tinto database
             hour = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
             temp_at_coords = w.get_temperature('celsius')['temp']
@@ -87,18 +111,19 @@ if __name__ == "__main__":
             cursor.execute('''INSERT INTO moistureRead(moisture, plant, date)
                               VALUES (?,?,?)''', (moisture, 'smiley', hour))
 
-
+            # Closing everything. Sleep time will be around 10 minutes so it does not make sense keeping it open
             db.commit()
             cursor.close()
             db.close()
             arduino.close()
 
+            # Sleeeeeeeeeep
             time.sleep(sleep_time)
+
         except pyowm.exceptions.api_call_error.APICallTimeoutError:
             logger.exception('OWM API Timeout')
 
         except:
-            # logger.error('Exception not cached, exiting...')
             logger.exception('Exception not cached, exiting...')
             cursor.close()
             db.close()
