@@ -38,6 +38,7 @@ if __name__ == "__main__":
     ch.setFormatter(formatter)
     logger.addHandler(ch)
 
+    #Set config options
     serial_port = config['Serial']['SerialPort']
     serial_baud_rate = int(config['Serial']['SerialBaudRate'])
     serial_timeout = int(config['Serial']['SerialTimeout'])
@@ -82,7 +83,7 @@ if __name__ == "__main__":
             cursor.execute('''INSERT INTO humidityRead(humidity, type, date)
                               VALUES (?,?,?)''', (humidity, 'inside', hour))
             cursor.execute('''INSERT INTO temperatureRead(temperature, type, date)
-                              VALUES (?,?,?)''', (temp, 'inside', hour))
+                              VALUES (?,?,?)''', (temperature, 'inside', hour))
             cursor.execute('''INSERT INTO moistureRead(moisture, plant, date)
                               VALUES (?,?,?)''', (moisture, 'smiley', hour))
 
