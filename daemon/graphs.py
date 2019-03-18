@@ -13,7 +13,6 @@ import argparse
 
 if __name__ == "__main__":
 
-
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--config", help="Config file. If not provided, " + DEFAULT_CONFIG_FILE + " will be used.",
                         default=DEFAULT_CONFIG_FILE)
@@ -35,9 +34,38 @@ if __name__ == "__main__":
                            'WHERE plant = 1 '
                            'ORDER BY date asc', disk_engine)
 
-    py.iplot({
-        'data': [go.Scatter(x=df['date'], y=df['moisture'])],
-        'layout': {
-            'margin': {'b': 150},  # Make the bottom margin a bit bigger to handle the long text
-            'xaxis': {'tickangle': 40}}  # Angle the labels a bit
-    }, filename='Soil moisture evolution')
+    trace = go.Scatter(
+        x=df['date'],
+        y=df['moisture'],
+        mode='lines',
+        line=dict(color='rgb(49,130,189)', width=8),
+        connectgaps=True,
+    )
+
+    layout = go.Layout(
+        xaxis=dict(
+            showline=True,
+            showgrid=False,
+            showticklabels=True,
+            linecolor='rgb(204, 204, 204)',
+            linewidth=2,
+            ticks='outside',
+            tickcolor='rgb(204, 204, 204)',
+            tickwidth=2,
+            ticklen=5,
+            tickfont=dict(
+                family='Arial',
+                size=12,
+                color='rgb(82, 82, 82)',
+            ),
+        ),
+        yaxis=dict(
+            showgrid=False,
+            zeroline=False,
+            showline=False,
+            showticklabels=False,
+        ),
+    )
+
+    fig = go.Figure(data=[trace], layout=layout)
+    py.plot(fig, filename='Soil moisture evolution')
