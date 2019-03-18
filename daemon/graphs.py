@@ -33,7 +33,7 @@ if __name__ == "__main__":
     logger = logging.getLogger(config['Logging']['LoggerName'])
     disk_engine = create_engine('sqlite:///' + config['Database']['FilePath'])
 
-    df = pd.read_sql_query('SELECT date, moisture s'
+    df = pd.read_sql_query('SELECT date, moisture '
                            'FROM moistureRead '
                            'WHERE plant = 1 '
                            'ORDER BY date', disk_engine)
