@@ -10,6 +10,9 @@ import plotly.graph_objs as go
 
 import configparser
 import argparse
+import logging
+
+DEFAULT_CONFIG_FILE = "config.ini"
 
 if __name__ == "__main__":
 
@@ -21,12 +24,13 @@ if __name__ == "__main__":
 
     config = configparser.ConfigParser()
     try:
-        config.read (args.config)
+        config.read(args.config)
 
     except:
         print('Error reading config file')
         exit()
 
+    logger = logging.getLogger(config['Logging']['LoggerName'])
     disk_engine = create_engine('sqlite:///' + config['Database']['FilePath'])
 
     df = pd.read_sql_query('SELECT date, moisture'
