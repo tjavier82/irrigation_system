@@ -36,7 +36,7 @@ if __name__ == "__main__":
     df = pd.read_sql_query('SELECT date, moisture'
                            'FROM moistureRead '
                            'WHERE plant = 1 '
-                           'ORDER BY date asc', disk_engine)
+                           'ORDER BY date', disk_engine)
 
     trace = go.Scatter(
         x=df['date'],
