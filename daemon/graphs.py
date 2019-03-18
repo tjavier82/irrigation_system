@@ -33,17 +33,35 @@ if __name__ == "__main__":
     logger = logging.getLogger(config['Logging']['LoggerName'])
     disk_engine = create_engine('sqlite:///' + config['Database']['FilePath'])
 
-    df = pd.read_sql_query('SELECT date, moisture '
-                           'FROM moistureRead '
-                           'WHERE plant = 1 '
-                           'ORDER BY date', disk_engine)
+    df_1 = pd.read_sql_query('SELECT date, moisture '
+                             'FROM moistureRead '
+                             'WHERE plant = 1 '
+                             'ORDER BY date', disk_engine)
 
-    trace = go.Scatter(
-        x=df['date'],
-        y=df['moisture'],
+    df_2 = pd.read_sql_query('SELECT date, waterAmount '
+                             'FROM watering '
+                             'WHERE plant = 1 '
+                             'ORDER BY date', disk_engine)
+
+
+
+    trace_1 = go.Scatter(
+        x=df_1['date'],
+        y=df_1['moisture'],
         mode='lines',
-        line=dict(color='rgb(49,130,189)', width=8),
+        line=dict(color='rgb(49,130,189)', width=2),
         connectgaps=True,
+    )
+
+    trace_2 = go.Scatter(
+        x=df_1['date'],
+        y=df_1['waterAmount'],
+        yaxis='y2',
+        mode='markers',
+        marker = dict(
+            size = 10,
+            color = 'rgba(0, 0, 255, .8)',
+        ),
     )
 
     layout = go.Layout(
@@ -69,7 +87,18 @@ if __name__ == "__main__":
             showline=False,
             showticklabels=False,
         ),
+        yaxis2=dict(
+            title='Waterink',
+            titlefont=dict(
+                color='rgb(148, 103, 189)'
+            ),
+            tickfont=dict(
+                color='rgb(148, 103, 189)'
+            ),
+            overlaying='y',
+            side='right'
+        )
     )
 
-    fig = go.Figure(data=[trace], layout=layout)
+    fig = go.Figure(data=[trace_1, trace_2], layout=layout)
     py.plot(fig, filename='Soil moisture evolution')
