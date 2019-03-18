@@ -54,8 +54,8 @@ if __name__ == "__main__":
     )
 
     trace_2 = go.Scatter(
-        x=df_1['date'],
-        y=df_1['waterAmount'],
+        x=df_2['date'],
+        y=df_2['waterAmount'],
         yaxis='y2',
         mode='markers',
         marker = dict(
