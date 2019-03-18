@@ -48,19 +48,21 @@ if __name__ == "__main__":
     trace_1 = go.Scatter(
         x=df_1['date'],
         y=df_1['moisture'],
+        name='Soil Moisture',
         mode='lines',
-        line=dict(color='rgb(49,130,189)', width=2),
+        line=dict(color='rgb(205, 12, 24)', width=2),
         connectgaps=True,
     )
 
     trace_2 = go.Scatter(
         x=df_2['date'],
         y=df_2['waterAmount'],
+        name='Watering',
         yaxis='y2',
         mode='markers',
-        marker = dict(
-            size = 10,
-            color = 'rgba(0, 0, 255, .8)',
+        marker=dict(
+            size=10,
+            color='rgb(49, 130, 189)',
         ),
     )
 
@@ -82,13 +84,14 @@ if __name__ == "__main__":
             ),
         ),
         yaxis=dict(
-            showgrid=False,
-            zeroline=False,
-            showline=False,
-            showticklabels=False,
+            title='Soil Moisture',
+            showgrid=True,
+            zeroline=True,
+            showline=True,
+            showticklabels=True,
         ),
         yaxis2=dict(
-            title='Waterink',
+            title='Watering',
             titlefont=dict(
                 color='rgb(148, 103, 189)'
             ),
