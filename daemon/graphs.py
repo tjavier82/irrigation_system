@@ -27,7 +27,7 @@ if __name__ == "__main__":
         print('Error reading config file')
         exit()
 
-    disk_engine = create_engine('sqlite://' + config['Database']['FilePath'])
+    disk_engine = create_engine('sqlite:///' + config['Database']['FilePath'])
 
     df = pd.read_sql_query('SELECT date, moisture'
                            'FROM moistureRead '
