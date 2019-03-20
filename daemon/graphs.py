@@ -38,6 +38,10 @@ if __name__ == "__main__":
                              'WHERE plant = 1 '
                              'ORDER BY date', disk_engine)
 
+    # normalize
+    df_1['moisture'] = 100 - ((df_1["moisture"] - df_1["moisture"].min()) / (df_1["moisture"].max() - df_1["moisture"].min())) * 100
+
+
     df_2 = pd.read_sql_query('SELECT date, waterAmount '
                              'FROM watering '
                              'WHERE plant = 1 '
