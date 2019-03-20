@@ -104,7 +104,8 @@ if __name__ == "__main__":
                 color='rgb(148, 103, 189)'
             ),
             overlaying='y',
-            side='right'
+            side='right',
+            range=[0, 0.2],
         )
     )
 
