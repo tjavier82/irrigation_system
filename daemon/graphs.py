@@ -93,6 +93,7 @@ if __name__ == "__main__":
             zeroline=True,
             showline=True,
             showticklabels=True,
+            range=[0,100],
         ),
         yaxis2=dict(
             title='Watering',
