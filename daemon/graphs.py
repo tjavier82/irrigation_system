@@ -39,8 +39,8 @@ if __name__ == "__main__":
                              'ORDER BY date', disk_engine)
 
     # normalize
-    moistureMaxLevel = config['Graph']['MoistureMaxLevel']
-    moistureMinLevel = config['Graph']['MoistureMinLevel']
+    moistureMaxLevel = int(config['Graph']['MoistureMaxLevel'])
+    moistureMinLevel = int(config['Graph']['MoistureMinLevel'])
 
     #Note that the higher moisture level, the dryer and the lower, soil is more wet
     df_1['moisture'] = 100 - (
