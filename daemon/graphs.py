@@ -93,23 +93,27 @@ if __name__ == "__main__":
         ),
         yaxis=dict(
             title='Soil Moisture',
-            showgrid=True,
+            showgrid=False,
             zeroline=True,
             showline=True,
             showticklabels=True,
-            range=[0, 100],
+            type='linear',
+            range=[1, 100],
+            dtick=20,
+            ticksuffix='%'
         ),
         yaxis2=dict(
             title='Watering',
             titlefont=dict(
-                color='rgb(148, 103, 189)'
+                color='rgb(49, 130, 189)'
             ),
             tickfont=dict(
-                color='rgb(148, 103, 189)'
+                color='rgb(49, 130, 189)'
             ),
             overlaying='y',
             side='right',
             range=[0, 0.2],
+            dtick=0.05,
         )
     )
 
