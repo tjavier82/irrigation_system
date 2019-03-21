@@ -39,8 +39,12 @@ if __name__ == "__main__":
                              'ORDER BY date', disk_engine)
 
     # normalize
-    df_1['moisture'] = 100 - ((df_1["moisture"] - df_1["moisture"].min()) / (df_1["moisture"].max() - df_1["moisture"].min())) * 100
+    moistureMaxLevel = config['Graph']['MoistureMaxLevel']
+    moistureMinLevel = config['Graph']['MoistureMinLevel']
 
+    #Note that the higher moisture level, the dryer and the lower, soil is more wet
+    df_1['moisture'] = 100 - (
+            (df_1["moisture"] - moistureMaxLevel) / (moistureMinLevel - moistureMaxLevel)) * 100
 
     df_2 = pd.read_sql_query('SELECT date, waterAmount '
                              'FROM watering '
@@ -93,7 +97,7 @@ if __name__ == "__main__":
             zeroline=True,
             showline=True,
             showticklabels=True,
-            range=[0,100],
+            range=[0, 100],
         ),
         yaxis2=dict(
             title='Watering',
